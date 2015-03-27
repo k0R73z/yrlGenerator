@@ -1,52 +1,5 @@
 <?php
 
-/*
-
-  $arData = array(
-  'type' => '',
-  'property-type' => '',
-  'category' => '',
-  'url' => '',
-  'payed-adv' => '',
-  'manually-added' => '',
-  'creation-date' => '',
-  'last-update-date' => '',
-  'expire-date' => '',
-  'location' => array(
-  'country' => '',
-  'locality-name' => '',
-  'sub-locality-name' => '',
-  'address' => '',
-  'metro' => array(
-  array(
-  'name' => '',
-  'time-on-foot' => '',
-  ),
-  array(
-  'name' => '',
-  'time-on-foot' => '',
-  ),
-  ),
-  ),
-  'image' => array(
-
-  ),
-  'price' => array(
-  'value' => '',
-  'currency' => '',
-  'period' => '',
-  ),
-  'description' => '',
-  'area' => array(
-  'value' => '',
-  'unit' => '',
-  ),
-  'rooms' => '',
-  'floor' => '',
-  );
-
- */
-
 abstract class YRLGenerator extends CApplicationComponent {
 
     /**

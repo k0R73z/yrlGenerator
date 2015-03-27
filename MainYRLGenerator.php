@@ -42,7 +42,7 @@ class MyYRLGenerator extends YRLGenerator {
                 $arData['image'][] = $pic->src;
             }
             
-            // Убираем пустые теги как сказано в требованиях к фиду
+            // Убираем пустые элементы как сказано в требованиях к фиду
             if (empty($arData['location']['metro'])) {
                 unset($arData['location']['metro']);
             }
