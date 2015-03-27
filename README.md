@@ -10,7 +10,7 @@ Yrl Генератор
 
 Валидатор фида - https://webmaster.yandex.ru/xsdtest.xml
 
-Установка
+Установка  
 ============
 config/main.php:
 
