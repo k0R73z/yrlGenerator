@@ -52,7 +52,7 @@ class MainYRLGenerator extends YRLGenerator {
             if (!empty($advert->picture)) {
                 foreach ($advert->picture as $pic) {
                     $arData['image'][] = 'http://www.cdaem.ru/images/' . $pic->id . '.jpg';
-                }
+                } 
             } else {
                 unset($arData['image']);
             }
