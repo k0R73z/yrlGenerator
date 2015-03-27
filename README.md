@@ -32,7 +32,7 @@ config/main.php:
 
 Ваш компонент:
 
-    class MyYrlGenerator extends YrlGenerator {
+    class MyYRLGenerator extends YRLGenerator {
       protected function offers() {
         $offers = ...;
         foreach($offers as $offer) {
