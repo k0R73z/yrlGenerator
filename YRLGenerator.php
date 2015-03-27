@@ -126,32 +126,10 @@ abstract class YRLGenerator extends CApplicationComponent {
         $engine = $this->getEngine();
         $engine->startElement('offer');
         $engine->writeAttribute('internal-id', $id);
-
         $this->writeElement($data);
-
         $engine->fullEndElement();
     }
 
-    protected function writeLocationElement($arElements) {
-        $engine = $this->getEngine();
-        $engine->startElement('location');
-        $this->writeElement($arElements);
-        $engine->fullEndElement();
-    }
-
-    protected function writePriceElement($arElements) {
-        $engine = $this->getEngine();
-        $engine->startElement('price');
-        $this->writeElement($arElements);
-        $engine->fullEndElement();
-    }
-
-    protected function writeAreaElement($arElements) {
-        $engine = $this->getEngine();
-        $engine->startElement('area');
-        $this->writeElement($arElements);
-        $engine->fullEndElement();
-    }
 
     protected function writeMetroElement($arElements) {
         $engine = $this->getEngine();
@@ -167,32 +145,36 @@ abstract class YRLGenerator extends CApplicationComponent {
         }
     }
 
-    protected function writeSales_agentElement($arElements) {
+    protected function writeImageElement($arImages) {
         $engine = $this->getEngine();
-        $engine->startElement('sales-agent');
+        foreach ($arImages as $imageUrl) {
+            $engine->writeElement('image', $imageUrl);
+        }
+    }
+   
+    protected function writeArrayElement($element, $arElements) {
+        $engine = $this->getEngine();
+        $engine->startElement($element);
         $this->writeElement($arElements);
         $engine->fullEndElement();
     }
-
+   
     protected function writeElement($arElements) {
         $engine = $this->getEngine();
         foreach ($arElements as $element => $value) {
-            if (method_exists($this, 'write' . $this->convertStrToMethodName($element) . 'Element')) {
-                $this->{'write' . $this->convertStrToMethodName($element) . 'Element'}($value);
+            $methodName = 'write' . $this->convertStrToMethodName($element) . 'Element';
+            if (method_exists($this, $methodName)) {
+                $this->{$methodName}($value);
+            } elseif (is_array($value)) {
+                $this->writeArrayElement($element, $value);
             } else {
-                if (!is_array($value)) {
-                    $value = array($value);
-                }
-                foreach ($value as $val) {
-                    $engine->writeElement($element, $val);
-                }
+                $engine->writeElement($element, $value);
             }
         }
     }
 
     private function convertStrToMethodName($str) {
-        $name = str_replace('-', '_', $str); 
-
+        $name = str_replace('-', '_', $str);
         return ucfirst($name);
     }
 

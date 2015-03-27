@@ -1,33 +1,22 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of MainYRLGenerator
- *
- * @author SKYNET
- */
-class MainYRLGenerator extends YRLGenerator {
+class MyYRLGenerator extends YRLGenerator {
 
     public function offers() {
         $adverts = Adverts::model()->findAll();
-        foreach ($adverts as $key => $advert) {
+        foreach ($adverts as $advert) {
             $arData = array(
                 'type' => 'аренда',
                 'property-type' => 'жилая',
                 'category' => 'квартира',
-                'url' => 'http://wwww.cdaem.ru/advert/' . $advert->id,
+                'url' => $advert->url,
                 'payed-adv' => $advert->spec,
                 'manually-added' => '1',
                 'creation-date' => date('Y-m-d\TH:i:s+03:00', strtotime($advert->DateT)),
                 'location' => array(
                     'country' => 'Россия',
                     'locality-name' => 'Москва',
-                    'sub-locality-name' => $advert->district->okrug_name,
+                    'sub-locality-name' => $advert->district->area,
                     'address' => $advert->geopoint,
                     'metro' => array(
                     ),
@@ -41,19 +30,23 @@ class MainYRLGenerator extends YRLGenerator {
                 ),
                 'rooms' => $advert->number_flat,
             );
-            if (isset($advert->underground->station_name))
-                    $arData['location']['metro'][] = array('name' => $advert->underground->station_name, 'time-on-foot' => $advert->udal_metro_peshkom, 'time-on-transport' => $advert->udal_metro_transport);
-            if (isset($advert->underground2->station_name))
-                    $arData['location']['metro'][] = array('name' => $advert->underground2->station_name, 'time-on-foot' => $advert->udal_metro_peshkom, 'time-on-transport' => $advert->udal_metro_transport);
 
-            if (empty($arData['location']['metro']))
-                    unset($arData['location']['metro']);
-
-            if (!empty($advert->picture)) {
-                foreach ($advert->picture as $pic) {
-                    $arData['image'][] = 'http://www.cdaem.ru/images/' . $pic->id . '.jpg';
-                }
-            } else {
+            foreach ($advert->metro as $metro) {
+                $arData['location']['metro'][] = array(
+                    'name' => $metro->station_name,
+                    'time-on-foot' => $metro->walk_time,
+                    'time-on-transport' => $metro->auto_time
+                );
+            }
+            foreach ($advert->picture as $pic) {
+                $arData['image'][] = $pic->src;
+            }
+            
+            // Убираем пустые теги как сказано в требованиях к фиду
+            if (empty($arData['location']['metro'])) {
+                unset($arData['location']['metro']);
+            }
+            if (empty($arData['image'])) {
                 unset($arData['image']);
             }
 
