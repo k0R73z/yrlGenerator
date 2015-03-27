@@ -1,12 +1,49 @@
-# Yrl Генератор
-Расширение для генерации фида Яндекс.Недвижимость (<a href="https://help.yandex.ru/webmaster/realty/requirements.xml">Технические требования </a>)
+Yrl Генератор
+============
+Расширение для генерации фида Яндекс.Недвижимость (<a href="https://help.yandex.ru/webmaster/realty/requirements.xml">Технические требования</a>)
 
-<p>
 Возможна выгрузка фида прямо в браузер или задать путь для сохранения.<br/>
 Для создания фида необходимо создать свой класс для сбора данных и определить в нем метод offers()<br/>
-</p>
-<p>
-Из массива выстраивается xml дерево в котором ключи массива - теги элемента.<br/>
-Для дополнительной обработки некоторых элементов (например metro), можно написать хук (например writeMetroElement) 
-</p>
 
+Из массива выстраивается xml дерево в котором ключи массива - теги элемента.<br/>
+Для дополнительной обработки некоторых элементов (например metro, image), можно написать хук (writeНазваниеЭлементаElement) 
+
+Установка
+============
+config/main.php:
+
+    'import'=>array(
+        ...
+        'application.components.YrlGenerator',
+        ...
+    ),
+
+    // секция components в config.php
+    
+    'components'=>array(
+        ...
+        'yrlGenerator'=>array(
+            'class'=>'MyYrlGenerator',
+            // Выгружать в коневую директорию
+            'outputFile'=>dirname($_SERVER['SCRIPT_FILENAME']).'/feed.yrl'
+        ),
+        ...
+    )
+
+Ваш компонент:
+
+    class MyYrlGenerator extends YrlGenerator {
+      protected function offers() {
+        $offers = ...;
+        foreach($offers as $offer) {
+          $this->addOffer($id,$data);
+        }
+      }
+    }
+
+Запуск генератора:
+
+     $yrlGenerator = Yii::app()->yrlGenerator;
+     $yrlGenerator->run();
+
+Подробнее о Яндекс.Недвижимость https://help.yandex.ru/webmaster/realty/quickstart.xml
