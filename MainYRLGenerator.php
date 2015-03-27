@@ -31,7 +31,6 @@ class MyYRLGenerator extends YRLGenerator {
                 'rooms' => $advert->number_flat,
             );
 
-
             foreach ($advert->metro as $metro) {
                 $arData['location']['metro'][] = array(
                     'name' => $metro->station_name,
@@ -48,16 +47,6 @@ class MyYRLGenerator extends YRLGenerator {
                 unset($arData['location']['metro']);
             }
             if (empty($arData['image'])) {
-
-            if (empty($arData['location']['metro']))
-                    unset($arData['location']['metro']);
-
-            if (!empty($advert->picture)) {
-                foreach ($advert->picture as $pic) {
-                    $arData['image'][] = 'http://www.cdaem.ru/images/' . $pic->id . '.jpg';
-                } 
-            } else {
-
                 unset($arData['image']);
             }
 
