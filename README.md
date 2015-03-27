@@ -17,9 +17,7 @@ config/main.php:
         'application.components.YrlGenerator',
         ...
     ),
-
-Секция components в config.php
-    
+    ...
     'components'=>array(
         ...
         'yrlGenerator'=>array(
